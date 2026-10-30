@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#f2f6ef">
+	<title>EarthKeepers | Protect Today, Preserve Tomorrow</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;600;700&family=Calistoga&family=Noto+Serif:wght@400;600&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			color-scheme: light;
+			--forest: #477447;
+			--forest-dark: #2f5b35;
+			--leaf: #789a70;
+			--sage: #cddcbd;
+			--paper: #edf4df;
+			--white: #fffefa;
+			--ink: #304632;
+			--muted: #71806d;
+			--accent: #ef91b3;
+			--accent-dark: #d86591;
+			--serif: "Calistoga", "Noto Serif", Georgia, serif;
+			--sans: "Arimo", "Trebuchet MS", "Segoe UI", sans-serif;
+		}
+
+		* { box-sizing: border-box; }
+		html { scroll-behavior: smooth; }
+
+		body {
+			margin: 0;
+			color: var(--ink);
+			background: var(--white);
+			font-family: var(--sans);
+		}
+
+		a { color: inherit; }
+
+		.brand-name { white-space: nowrap; }
+
+		.announcement {
+			min-height: 34px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 7px 14px;
+			background: var(--forest-dark);
+			color: #eff5e9;
+			font-size: 11px;
+			letter-spacing: 0.25px;
+			text-align: center;
+		}
+
+		.site-header {
+			position: relative;
+			z-index: 5;
+			display: flex;
+			min-height: 76px;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 max(6vw, calc((100vw - 1200px) / 2));
+			background: var(--paper);
+		}
+
+		.brand {
+			display: inline-flex;
+			align-items: center;
+			gap: 9px;
+			color: var(--forest-dark);
+			font-family: var(--serif);
+			font-size: 22px;
+			line-height: 1;
+			text-decoration: none;
+		}
+
+		.brand img {
+			display: block;
+			height: 58px;
+			width: auto;
+		}
+
+		.main-nav { display: flex; align-items: center; gap: 31px; }
+
+		.main-nav a {
+			color: #44584a;
+			font-size: 12px;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		.main-nav a:hover, .main-nav a:focus-visible { color: var(--accent); }
+		.main-nav .shop-link { color: var(--forest); }
+
+		.menu-toggle {
+			display: none;
+			width: 42px;
+			height: 42px;
+			border: 1px solid #d4dfd1;
+			border-radius: 4px;
+			background: transparent;
+			color: var(--forest-dark);
+			cursor: pointer;
+			font-size: 22px;
+		}
+
+		.hero {
+			display: grid;
+			min-height: 590px;
+			grid-template-columns: 0.92fr 1.08fr;
+			background: linear-gradient(120deg, var(--paper) 0%, #f8dce8 100%);
+		}
+
+		.hero-copy {
+			align-self: center;
+			max-width: 600px;
+			padding: 68px 36px 78px max(8vw, calc((100vw - 1140px) / 2));
+			animation: appear 650ms ease both;
+		}
+
+		.eyebrow {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin: 0 0 19px;
+			color: var(--leaf);
+			font-size: 10px;
+			font-weight: 700;
+			letter-spacing: 1.7px;
+			text-transform: uppercase;
+		}
+
+		.eyebrow::before { width: 23px; height: 2px; background: var(--accent); content: ""; }
+
+		h1, h2, h3, p { margin-top: 0; }
+
+		h1 {
+			max-width: 540px;
+			margin-bottom: 20px;
+			color: var(--forest-dark);
+			font-family: var(--serif);
+			font-size: clamp(48px, 6vw, 74px);
+			font-weight: 400;
+			line-height: 1;
+		}
+
+		h1 em { color: var(--leaf); font-weight: 400; }
+
+		.hero-copy > p:not(.eyebrow) {
+			max-width: 395px;
+			margin-bottom: 28px;
+			color: #596b5c;
+			font-size: 14px;
+			line-height: 1.85;
+		}
+
+		.primary-link {
+			display: inline-flex;
+			min-height: 47px;
+			align-items: center;
+			gap: 18px;
+			padding: 0 19px;
+			border-radius: 4px;
+			background: linear-gradient(110deg, var(--forest), var(--accent-dark));
+			color: white;
+			font-size: 12px;
+			font-weight: 700;
+			text-decoration: none;
+			transition: background 150ms ease, transform 150ms ease;
+		}
+
+		.primary-link:hover { background: linear-gradient(110deg, var(--forest-dark), #994560); transform: translateY(-2px); }
+		.primary-link span { font-size: 18px; }
+
+		.hero-photo {
+			min-height: 590px;
+			background: linear-gradient(135deg, rgba(47, 91, 53, 0.12), rgba(239, 145, 179, 0.24)), url("herosection1.jpg") center 50% / cover no-repeat;
+		}
+
+		.values-strip {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			padding: 22px max(8vw, calc((100vw - 1100px) / 2));
+			border-bottom: 1px solid #e5ebe2;
+			background: var(--white);
+		}
+
+		.value {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 11px;
+			color: #526358;
+			font-size: 11px;
+			font-weight: 700;
+		}
+
+		.value + .value { border-left: 1px solid #e1e8df; }
+		.value-mark { color: var(--leaf); font-size: 17px; }
+
+		.collection { padding: 84px 24px 94px; background: var(--white); }
+
+		.section-inner { width: min(1100px, 100%); margin: 0 auto; }
+
+		.section-heading {
+			display: flex;
+			align-items: end;
+			justify-content: space-between;
+			gap: 24px;
+			margin-bottom: 31px;
+		}
+
+		.section-heading .eyebrow { margin-bottom: 12px; }
+
+		h2 {
+			margin-bottom: 0;
+			color: var(--forest-dark);
+			font-family: var(--serif);
+			font-size: clamp(34px, 4vw, 46px);
+			font-weight: 400;
+			line-height: 1.1;
+		}
+
+		.text-link {
+			padding-bottom: 5px;
+			border-bottom: 1px solid var(--leaf);
+			color: var(--forest);
+			font-size: 12px;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		.plant-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+		.plant-item { min-width: 0; }
+
+		.plant-image-wrap { position: relative; overflow: hidden; background: #e3ebdf; }
+
+		.plant-image-wrap img {
+			display: block;
+			width: 100%;
+			aspect-ratio: 1 / 1.06;
+			object-fit: cover;
+			transition: transform 350ms ease;
+		}
+
+		.plant-item:hover .plant-image-wrap img { transform: scale(1.035); }
+
+		.favorite-button {
+			position: absolute;
+			top: 12px;
+			right: 12px;
+			width: 38px;
+			height: 38px;
+			border: 0;
+			border-radius: 50%;
+			background: rgba(255, 254, 250, 0.95);
+			color: var(--forest);
+			cursor: pointer;
+			font-size: 20px;
+			line-height: 1;
+		}
+
+		.favorite-button[aria-pressed="true"] { color: var(--accent); }
+		.plant-details { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-top: 13px; }
+		.plant-details h3 { margin-bottom: 0; color: var(--forest-dark); font-family: var(--serif); font-size: 20px; font-weight: 400; }
+		.plant-details p { margin-bottom: 0; color: var(--leaf); font-size: 12px; font-weight: 700; white-space: nowrap; }
+		.plant-type { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+
+		.care-section {
+			display: grid;
+			min-height: 410px;
+			grid-template-columns: 1fr 1fr;
+			background: linear-gradient(120deg, var(--sage) 0%, #f7dde9 100%);
+		}
+
+		.care-photo {
+			min-height: 410px;
+			background: var(--forest) url("herosection2.jpg") center / cover no-repeat;
+		}
+
+		.care-copy { align-self: center; max-width: 540px; padding: 56px clamp(30px, 7vw, 95px); }
+		.care-copy .eyebrow { margin-bottom: 14px; }
+		.care-copy h2 { margin-bottom: 15px; font-size: clamp(34px, 4vw, 46px); }
+		.care-copy > p:not(.eyebrow) { margin-bottom: 22px; color: #5e6c5f; font-size: 13px; line-height: 1.8; }
+
+		.about-block {
+			display: grid;
+			grid-template-columns: 0.85fr 1.15fr;
+			align-items: center;
+			gap: clamp(32px, 8vw, 90px);
+			padding: 82px max(6vw, calc((100vw - 1100px) / 2));
+			background: var(--white);
+		}
+
+		.about-block:nth-of-type(even) { background: var(--paper); }
+
+		.about-heading { margin: 0; }
+
+		.about-heading h2 { margin-bottom: 12px; }
+
+		.about-mark {
+			width: 86px;
+			height: 86px;
+			display: grid;
+			place-items: center;
+			margin-bottom: 22px;
+			border-radius: 50% 50% 50% 12px;
+			background: var(--sage);
+			color: var(--forest-dark);
+			font-size: 42px;
+			transform: rotate(-8deg);
+		}
+
+		.about-block p:not(.eyebrow) {
+			max-width: 640px;
+			margin: 0;
+			color: #596b5c;
+			font-family: var(--sans);
+			font-size: 18px;
+			line-height: 1.9;
+		}
+
+		footer {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			align-items: center;
+			gap: 28px;
+			padding: 34px max(6vw, calc((100vw - 1200px) / 2));
+			background: var(--forest-dark);
+			color: #d7e5d6;
+			font-size: 12px;
+		}
+
+		.footer-brand { font-family: var(--serif); font-size: 21px; }
+		.footer-details { display: grid; gap: 7px; }
+		.footer-details a { color: #f6cfdd; text-decoration: none; }
+		footer p { margin: 0; }
+
+		@keyframes appear {
+			from { opacity: 0; transform: translateY(10px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+
+		@media (max-width: 760px) {
+			.site-header { min-height: 68px; padding: 0 20px; }
+			.brand { font-size: 18px; }
+			.brand img { height: 50px; }
+			.menu-toggle { display: grid; place-items: center; }
+			.main-nav {
+				position: absolute;
+				top: 100%;
+				right: 0;
+				left: 0;
+				display: none;
+				align-items: stretch;
+				gap: 0;
+				padding: 8px 20px 17px;
+				border-top: 1px solid #e0e8dc;
+				background: var(--paper);
+			}
+			.main-nav.is-open { display: flex; flex-direction: column; }
+			.main-nav a { padding: 13px 4px; }
+			.hero { grid-template-columns: 1fr; }
+			.hero-copy { max-width: none; padding: 58px 27px 48px; }
+			h1 { max-width: 480px; font-size: clamp(50px, 12vw, 68px); }
+			.hero-photo { min-height: 350px; }
+			.values-strip { padding: 20px 14px; }
+			.value { flex-direction: column; gap: 6px; font-size: 10px; text-align: center; }
+			.about-block { grid-template-columns: 1fr; gap: 24px; padding: 58px 24px; }
+			.about-mark { width: 72px; height: 72px; font-size: 34px; }
+			.about-block p:not(.eyebrow) { font-size: 16px; line-height: 1.75; }
+			.collection { padding: 65px 22px 72px; }
+			.section-heading { align-items: flex-start; flex-direction: column; gap: 14px; }
+			.plant-grid { grid-template-columns: 1fr 1fr; gap: 25px 14px; }
+			.plant-details { align-items: flex-start; flex-direction: column; gap: 4px; }
+			.care-section { grid-template-columns: 1fr; }
+			.care-photo { min-height: 310px; }
+			.care-copy { padding: 46px 26px 52px; }
+			footer { grid-template-columns: 1fr; gap: 22px; padding: 28px 23px; }
+		}
+
+		@media (max-width: 420px) {
+			.plant-grid { grid-template-columns: 1fr; }
+			.plant-image-wrap img { aspect-ratio: 1.15; }
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			html { scroll-behavior: auto; }
+			*, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+		}
+	</style>
+</head>
+<body>
+	<div class="announcement">A little more green, delivered to your door. <a href="#plants" style="margin-left: 5px; color: #d6e69a;">Explore plants &#8594;</a></div>
+	<header class="site-header">
+		<a class="brand" href="#home" aria-label="EarthKeepers home"><img src="officiallogo.jpg" alt=""><span class="brand-name">EarthKeepers</span></a>
+		<button class="menu-toggle" id="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Open menu">&#9776;</button>
+		<nav class="main-nav" id="main-nav" aria-label="Main menu">
+			<a href="#home">Home</a>
+			<a href="#plants">Plants</a>
+			<a href="#care">Plant care</a>
+			<a class="shop-link" href="#plants">Shop the collection &#8599;</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="hero" id="home" aria-labelledby="hero-title">
+			<div class="hero-copy">
+				<p class="eyebrow">Protect today, preserve tomorrow</p>
+				<h1>Keep Earth <em>growing.</em></h1>
+				<p>Discover plant-centered ways to care for the living world, nurture greener spaces, and leave a healthier home for the next generation.</p>
+				<a class="primary-link" href="#plants">Explore Earth-friendly plants <span aria-hidden="true">&#8594;</span></a>
+			</div>
+			<div class="hero-photo" role="img" aria-label="Plants growing in a garden"></div>
+		</section>
+
+		<section class="about-block" id="about" aria-labelledby="about-title">
+			<div class="about-heading">
+				<div class="about-mark" aria-hidden="true">&#10047;</div>
+				<p class="eyebrow">Our story</p>
+				<h2 id="about-title">About</h2>
+			</div>
+			<p>We are a planting brand located in Calauan, Laguna. We are very into plants and love nature.</p>
+		</section>
+
+		<section class="about-block" id="who-we-are" aria-labelledby="who-we-are-title">
+			<div class="about-heading">
+				<div class="about-mark" aria-hidden="true">&#9785;</div>
+				<p class="eyebrow">Our purpose</p>
+				<h2 id="who-we-are-title">Who are we</h2>
+			</div>
+			<p>We are a planting company. We want to preserve the Earth by planting trees. We love making a difference.</p>
+		</section>
+
+		<section class="values-strip" aria-label="Our promise">
+			<div class="value"><span class="value-mark" aria-hidden="true">&#10003;</span> Earth-minded plant care</div>
+			<div class="value"><span class="value-mark" aria-hidden="true">&#10003;</span> Beginner-friendly guidance</div>
+			<div class="value"><span class="value-mark" aria-hidden="true">&#10003;</span> A greener tomorrow</div>
+		</section>
+
+		<section class="collection" id="plants" aria-labelledby="plants-title">
+			<div class="section-inner">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Bring nature closer</p>
+						<h2 id="plants-title">Grow with purpose</h2>
+					</div>
+					<a class="text-link" href="#care">See our plant care guide &#8594;</a>
+				</div>
+				<div class="plant-grid">
+					<article class="plant-item">
+						<div class="plant-image-wrap">
+							<img src="herosection2.jpg" alt="Lush green plants in a forest setting" loading="lazy">
+							<button class="favorite-button" type="button" aria-label="Add Monstera to favorites" aria-pressed="false">&#9825;</button>
+						</div>
+						<div class="plant-details"><h3>Monstera</h3><p>$24</p></div>
+						<p class="plant-type">Easy care · Bright, indirect light</p>
+					</article>
+					<article class="plant-item">
+						<div class="plant-image-wrap">
+							<img src="herosection3.jpg" alt="Pathway through a green woodland" loading="lazy">
+							<button class="favorite-button" type="button" aria-label="Add Pilea to favorites" aria-pressed="false">&#9825;</button>
+						</div>
+						<div class="plant-details"><h3>Pilea</h3><p>$18</p></div>
+						<p class="plant-type">Pet friendly · Bright, indirect light</p>
+					</article>
+					<article class="plant-item">
+						<div class="plant-image-wrap">
+							<img src="herosection4.jpg" alt="Pink blossoms beneath trees" loading="lazy">
+							<button class="favorite-button" type="button" aria-label="Add Little Jungle set to favorites" aria-pressed="false">&#9825;</button>
+						</div>
+						<div class="plant-details"><h3>Little Jungle</h3><p>$32</p></div>
+						<p class="plant-type">Three-plant set · Made for beginners</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="care-section" id="care" aria-labelledby="care-title">
+			<div class="care-photo" role="img" aria-label="Potted green plants gathered in a bright room"></div>
+			<div class="care-copy">
+				<p class="eyebrow">Small choices, lasting impact</p>
+				<h2 id="care-title">Grow greener with us.</h2>
+				<p>Good care helps every plant—and every planet-friendly choice—flourish. Explore simple guidance for light, watering, healthy soil, and building a greener daily habit.</p>
+				<a class="primary-link" href="#plants">Start with a plant <span aria-hidden="true">&#8594;</span></a>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="footer-details">
+			<p class="footer-brand">EarthKeepers</p>
+			<p>Janica L. Natiola</p>
+			<p>Email: <a href="mailto:llanterojanica@gmail.com">llanterojanica@gmail.com</a></p>
+			<p># <a href="tel:+639913386506">09913386506</a></p>
+		</div>
+		<p>&copy; 2026 EarthKeepers <a href="#home" style="color: #ef91b3; text-decoration: none;">Back to top &#8593;</a></p>
+	</footer>
+
+	<script>
+		const menuToggle = document.getElementById("menu-toggle");
+		const mainNav = document.getElementById("main-nav");
+
+		menuToggle.addEventListener("click", () => {
+			const isOpen = mainNav.classList.toggle("is-open");
+			menuToggle.setAttribute("aria-expanded", String(isOpen));
+			menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+			menuToggle.innerHTML = isOpen ? "&times;" : "&#9776;";
+		});
+
+		mainNav.addEventListener("click", (event) => {
+			if (event.target.closest("a")) {
+				mainNav.classList.remove("is-open");
+				menuToggle.setAttribute("aria-expanded", "false");
+				menuToggle.setAttribute("aria-label", "Open menu");
+				menuToggle.innerHTML = "&#9776;";
+			}
+		});
+
+		document.querySelectorAll(".favorite-button").forEach((button) => {
+			button.addEventListener("click", () => {
+				const isFavorite = button.getAttribute("aria-pressed") === "true";
+				button.setAttribute("aria-pressed", String(!isFavorite));
+				button.innerHTML = isFavorite ? "&#9825;" : "&#9829;";
+				button.setAttribute("aria-label", `${isFavorite ? "Add" : "Remove"} ${button.closest(".plant-item").querySelector("h3").textContent} ${isFavorite ? "to" : "from"} favorites`);
+			});
+		});
+	</script>
+</body>
+</html>

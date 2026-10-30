@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#f2f6ef">
+	<title>The Journal | Rooted</title>
+	<style>
+		:root {
+			color-scheme: light;
+			--forest: #1c5239;
+			--forest-dark: #123c29;
+			--leaf: #47754e;
+			--paper: #f2f6ef;
+			--white: #fffefa;
+			--ink: #26382d;
+			--muted: #738076;
+			--accent: #c85d7c;
+			--serif: Georgia, "Times New Roman", serif;
+			--sans: "Trebuchet MS", "Segoe UI", sans-serif;
+		}
+
+		* { box-sizing: border-box; }
+		html { scroll-behavior: smooth; }
+
+		body {
+			margin: 0;
+			color: var(--ink);
+			background: var(--white);
+			font-family: var(--sans);
+		}
+
+		a { color: inherit; }
+
+		.site-header {
+			position: relative;
+			z-index: 5;
+			display: flex;
+			min-height: 76px;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 max(6vw, calc((100vw - 1200px) / 2));
+			background: var(--paper);
+		}
+
+		.brand {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			color: var(--forest-dark);
+			font-family: var(--serif);
+			font-size: 25px;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		.brand-mark {
+			width: 31px;
+			height: 31px;
+			display: grid;
+			place-items: center;
+			border-radius: 50% 50% 50% 8px;
+			background: #d6e69a;
+			color: var(--forest-dark);
+			font-family: var(--sans);
+			font-size: 18px;
+			transform: rotate(-10deg);
+		}
+
+		.main-nav { display: flex; align-items: center; gap: 31px; }
+
+		.main-nav a {
+			color: #44584a;
+			font-size: 12px;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		.main-nav a:hover, .main-nav a:focus-visible { color: var(--accent); }
+		.main-nav .active { color: var(--leaf); }
+
+		.main-nav .nav-cta {
+			padding: 12px 16px;
+			border-radius: 4px;
+			background: var(--forest);
+			color: white;
+		}
+
+		.main-nav .nav-cta:hover, .main-nav .nav-cta:focus-visible { background: var(--forest-dark); color: white; }
+
+		.menu-toggle {
+			display: none;
+			width: 42px;
+			height: 42px;
+			border: 1px solid #d4dfd1;
+			border-radius: 4px;
+			background: transparent;
+			color: var(--forest-dark);
+			cursor: pointer;
+			font-size: 22px;
+		}
+
+		.journal-intro {
+			display: grid;
+			min-height: 470px;
+			grid-template-columns: 1fr 1fr;
+			align-items: stretch;
+			background: linear-gradient(120deg, #edf4e8 0%, #f8e7ed 100%);
+		}
+
+		.journal-intro-copy {
+			align-self: center;
+			max-width: 640px;
+			padding: 68px 36px 72px max(8vw, calc((100vw - 1100px) / 2));
+		}
+
+		.journal-hero-image {
+			min-height: 470px;
+			background: linear-gradient(135deg, rgba(18, 60, 41, 0.12), rgba(200, 93, 124, 0.24)), url("herosection2.jpg") center / cover no-repeat;
+		}
+
+		.eyebrow {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			gap: 10px;
+			margin: 0 0 15px;
+			color: var(--leaf);
+			font-size: 10px;
+			font-weight: 700;
+			letter-spacing: 1.7px;
+			text-transform: uppercase;
+		}
+
+		.eyebrow::before, .eyebrow::after { width: 22px; height: 2px; background: var(--accent); content: ""; }
+		h1, h2, h3, p { margin-top: 0; }
+
+		h1 {
+			margin-bottom: 12px;
+			color: var(--forest-dark);
+			font-family: var(--serif);
+			font-size: clamp(45px, 6vw, 68px);
+			font-weight: 400;
+			line-height: 1;
+		}
+
+		.journal-intro-copy > p:not(.eyebrow) {
+			max-width: 480px;
+			margin: 0 0 23px;
+			color: #5d6c60;
+			font-size: 13px;
+			line-height: 1.8;
+		}
+
+		.hero-link {
+			display: inline-flex;
+			min-height: 44px;
+			align-items: center;
+			gap: 16px;
+			padding: 0 17px;
+			border-radius: 4px;
+			background: linear-gradient(110deg, var(--forest), #b95778);
+			color: white;
+			font-size: 11px;
+			font-weight: 700;
+			text-decoration: none;
+			transition: transform 150ms ease;
+		}
+
+		.hero-link:hover { transform: translateY(-2px); }
+		.hero-link span { font-size: 17px; }
+
+		.featured {
+			display: grid;
+			width: min(1100px, calc(100% - 48px));
+			min-height: 340px;
+			grid-template-columns: 1fr 0.9fr;
+			margin: 45px auto 75px;
+			background: linear-gradient(120deg, #f3f7ef, #faedf1);
+		}
+
+		.featured-image {
+			min-height: 340px;
+			background: linear-gradient(135deg, rgba(18, 60, 41, 0.12), rgba(200, 93, 124, 0.2)), url("herosection2.jpg") center / cover no-repeat;
+		}
+
+		.featured-copy {
+			align-self: center;
+			padding: 35px clamp(25px, 5vw, 58px);
+		}
+
+		.post-meta {
+			margin-bottom: 12px;
+			color: var(--leaf);
+			font-size: 10px;
+			font-weight: 700;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+		}
+
+		.featured-copy h2 {
+			margin-bottom: 13px;
+			color: var(--forest-dark);
+			font-family: var(--serif);
+			font-size: clamp(31px, 4vw, 43px);
+			font-weight: 400;
+			line-height: 1.1;
+		}
+
+		.featured-copy > p:not(.post-meta) {
+			margin-bottom: 21px;
+			color: var(--muted);
+			font-size: 12px;
+			line-height: 1.8;
+		}
+
+		.read-link {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			padding: 0 0 5px;
+			border: 0;
+			border-bottom: 1px solid #9eb69c;
+			background: transparent;
+			color: var(--forest);
+			cursor: pointer;
+			font: inherit;
+			font-size: 11px;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		.read-link:hover { color: var(--accent); border-color: var(--accent); }
+
+		.journal { padding: 0 24px 88px; }
+		.journal-inner { width: min(1100px, 100%); margin: 0 auto; }
+
+		.journal-toolbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 22px;
+			margin-bottom: 25px;
+			padding-bottom: 17px;
+			border-bottom: 1px solid #e0e8de;
+		}
+
+		.filter-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+		.filter-button {
+			min-height: 34px;
+			padding: 0 12px;
+			border: 1px solid #dce5da;
+			border-radius: 3px;
+			background: transparent;
+			color: #58685b;
+			cursor: pointer;
+			font: inherit;
+			font-size: 10px;
+			font-weight: 700;
+			transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+		}
+
+		.filter-button:hover { border-color: var(--leaf); color: var(--forest); }
+		.filter-button[aria-pressed="true"] { border-color: var(--forest); background: linear-gradient(110deg, var(--forest), #b95778); color: white; }
+
+		.search-wrap { position: relative; width: min(230px, 100%); flex: 0 0 auto; }
+
+		.search-wrap input {
+			width: 100%;
+			height: 36px;
+			padding: 0 12px 0 34px;
+			border: 1px solid #dce5da;
+			border-radius: 3px;
+			outline: none;
+			background: white;
+			color: var(--ink);
+			font: inherit;
+			font-size: 11px;
+		}
+
+		.search-wrap input:focus { border-color: var(--leaf); box-shadow: 0 0 0 3px rgba(71, 117, 78, 0.1); }
+		.search-icon { position: absolute; top: 9px; left: 11px; color: var(--leaf); font-size: 14px; pointer-events: none; }
+
+		.result-count { min-height: 16px; margin: 0 0 18px; color: var(--muted); font-size: 11px; }
+
+		.post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 22px; }
+		.post-card { min-width: 0; }
+
+		.post-image {
+			display: block;
+			overflow: hidden;
+			background: #e3ebdf;
+		}
+
+		.post-image img {
+			display: block;
+			width: 100%;
+			aspect-ratio: 1.42;
+			object-fit: cover;
+			transition: transform 300ms ease;
+		}
+
+		.post-card:hover .post-image img { transform: scale(1.035); }
+		.post-card[hidden] { display: none; }
+		.post-content { padding-top: 16px; }
+
+		.post-content h3 {
+			margin-bottom: 9px;
+			color: var(--forest-dark);
+			font-family: var(--serif);
+			font-size: 22px;
+			font-weight: 400;
+			line-height: 1.2;
+		}
+
+		.post-excerpt { margin-bottom: 14px; color: var(--muted); font-size: 11px; line-height: 1.75; }
+
+		details > summary {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 0 0 4px;
+			border-bottom: 1px solid #9eb69c;
+			color: var(--forest);
+			cursor: pointer;
+			font-size: 10px;
+			font-weight: 700;
+			list-style: none;
+		}
+
+		details > summary::-webkit-details-marker { display: none; }
+		details > summary::after { content: "+"; font-size: 15px; font-weight: 400; }
+		details[open] > summary::after { content: "-"; }
+
+		.article-body {
+			margin: 12px 0 0;
+			padding: 12px 0 0;
+			border-top: 1px solid #e0e8de;
+			color: #59685c;
+			font-size: 11px;
+			line-height: 1.8;
+			animation: reveal 180ms ease both;
+		}
+
+		.no-results { display: none; padding: 38px 10px; color: var(--muted); font-family: var(--serif); font-size: 22px; text-align: center; }
+		.no-results.is-visible { display: block; }
+
+		.newsletter {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 30px;
+			padding: 49px max(6vw, calc((100vw - 1100px) / 2));
+			background: linear-gradient(115deg, var(--forest-dark), #633c50);
+			color: white;
+		}
+
+		.newsletter-copy h2 { margin-bottom: 7px; color: white; font-family: var(--serif); font-size: 30px; font-weight: 400; }
+		.newsletter-copy p { max-width: 390px; margin-bottom: 0; color: #c7d7c9; font-size: 11px; line-height: 1.65; }
+
+		.newsletter-form { display: flex; width: min(400px, 100%); gap: 7px; }
+
+		.newsletter-form input {
+			width: 100%;
+			min-width: 0;
+			height: 42px;
+			padding: 0 11px;
+			border: 1px solid rgba(255, 255, 255, 0.35);
+			border-radius: 3px;
+			outline: none;
+			background: rgba(255, 255, 255, 0.08);
+			color: white;
+			font: inherit;
+			font-size: 11px;
+		}
+
+		.newsletter-form input::placeholder { color: #c7d7c9; }
+		.newsletter-form input:focus { border-color: #d6e69a; }
+
+		.newsletter-form button {
+			min-width: 100px;
+			border: 0;
+			border-radius: 3px;
+			background: #d6e69a;
+			color: var(--forest-dark);
+			cursor: pointer;
+			font: inherit;
+			font-size: 11px;
+			font-weight: 700;
+		}
+
+		.newsletter-form button:hover { background: #e1eea2; }
+		.newsletter-status { min-height: 15px; margin: 6px 0 0; color: #d6e69a; font-size: 10px; }
+
+		footer {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 18px;
+			padding: 22px max(6vw, calc((100vw - 1200px) / 2));
+			background: #0e2d20;
+			color: #d7e5d6;
+			font-size: 10px;
+		}
+
+		footer p { margin: 0; }
+		footer a { color: #d6e69a; text-decoration: none; }
+
+		@keyframes reveal {
+			from { opacity: 0; transform: translateY(4px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+
+		@media (max-width: 760px) {
+			.site-header { min-height: 68px; padding: 0 20px; }
+			.menu-toggle { display: grid; place-items: center; }
+			.main-nav {
+				position: absolute;
+				top: 100%;
+				right: 0;
+				left: 0;
+				display: none;
+				align-items: stretch;
+				gap: 0;
+				padding: 8px 20px 17px;
+				border-top: 1px solid #e0e8dc;
+				background: var(--paper);
+			}
+			.main-nav.is-open { display: flex; flex-direction: column; }
+			.main-nav a { padding: 13px 4px; }
+			.main-nav .nav-cta { margin-top: 7px; padding: 13px 15px; text-align: center; }
+			.journal-intro { grid-template-columns: 1fr; }
+			.journal-intro-copy { padding: 52px 24px 43px; }
+			.journal-hero-image { min-height: 300px; }
+			.featured { width: calc(100% - 36px); grid-template-columns: 1fr; margin: 25px auto 56px; }
+			.featured-image { min-height: 250px; }
+			.featured-copy { padding: 26px 23px 30px; }
+			.journal { padding: 0 19px 65px; }
+			.journal-toolbar { align-items: stretch; flex-direction: column; gap: 14px; }
+			.search-wrap { width: 100%; }
+			.post-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
+			.post-content h3 { font-size: 19px; }
+			.newsletter { align-items: stretch; flex-direction: column; gap: 21px; padding: 39px 23px; }
+			.newsletter-form { width: 100%; }
+			footer { align-items: flex-start; flex-direction: column; padding: 20px 23px; }
+		}
+
+		@media (max-width: 480px) {
+			.post-grid { grid-template-columns: 1fr; }
+			.post-image img { aspect-ratio: 1.55; }
+			.newsletter-form button { min-width: 90px; }
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			html { scroll-behavior: auto; }
+			*, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+		}
+	</style>
+</head>
+<body>
+	<header class="site-header">
+		<a class="brand" href="home.html" aria-label="Rooted home"><span class="brand-mark" aria-hidden="true">&#10047;</span> rooted</a>
+		<button class="menu-toggle" id="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Open menu">&#9776;</button>
+		<nav class="main-nav" id="main-nav" aria-label="Main menu">
+			<a href="home.html">Home</a>
+			<a href="services.html">Services</a>
+			<a class="active" href="blogs.html" aria-current="page">Blogs</a>
+			<a class="nav-cta" href="services.html#contact">Let's talk &#8599;</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="journal-intro" aria-labelledby="page-title">
+			<div class="journal-intro-copy">
+				<p class="eyebrow">Plant, learn, and grow</p>
+				<h1 id="page-title">A little more <span style="color: var(--leaf);">green</span> starts here.</h1>
+				<p>Practical planting ideas, seasonal inspiration, and friendly tips to help you grow wherever you are.</p>
+				<a class="hero-link" href="#latest">Explore the journal <span aria-hidden="true">&#8594;</span></a>
+			</div>
+			<div class="journal-hero-image" role="img" aria-label="Plants growing in a garden"></div>
+		</section>
+
+		<article class="featured">
+			<div class="featured-image" role="img" aria-label="Rows of fresh green plants growing in a garden"></div>
+			<div class="featured-copy">
+				<p class="post-meta">Featured story &nbsp; / &nbsp; In the garden</p>
+				<h2>Start a garden right where you are</h2>
+				<p>No yard? No problem. A sunny windowsill, a balcony rail, or one good pot is plenty of room to begin growing.</p>
+				<a class="read-link" href="#latest">Explore the journal <span aria-hidden="true">&#8594;</span></a>
+			</div>
+		</article>
+
+		<section class="journal" id="latest" aria-labelledby="latest-title">
+			<div class="journal-inner">
+				<div class="section-heading">
+					<p class="eyebrow">Fresh from Rooted</p>
+					<h2 id="latest-title" style="margin: 0 0 22px; color: var(--forest-dark); font-family: var(--serif); font-size: clamp(32px, 4vw, 42px); font-weight: 400;">The latest notes</h2>
+				</div>
+				<div class="journal-toolbar">
+					<div class="filter-list" role="group" aria-label="Filter articles by category">
+						<button class="filter-button" type="button" data-filter="all" aria-pressed="true">All stories</button>
+						<button class="filter-button" type="button" data-filter="plant-care" aria-pressed="false">Plant care</button>
+						<button class="filter-button" type="button" data-filter="garden" aria-pressed="false">In the garden</button>
+						<button class="filter-button" type="button" data-filter="slow-living" aria-pressed="false">Slow living</button>
+					</div>
+					<label class="search-wrap">
+						<span class="search-icon" aria-hidden="true">&#9906;</span>
+						<span hidden>Search articles</span>
+						<input id="article-search" type="search" placeholder="Search stories" autocomplete="off">
+					</label>
+				</div>
+				<p class="result-count" id="result-count" role="status" aria-live="polite"></p>
+				<div class="post-grid" id="post-grid">
+					<article class="post-card" data-category="plant-care">
+						<a class="post-image" href="#post-monstera" aria-label="Read: Three easy-care plants for a brighter room"><img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80" alt="Potted houseplants gathered near a bright window" loading="lazy"></a>
+						<div class="post-content">
+							<p class="post-meta">Plant care &nbsp; / &nbsp; 5 min read</p>
+							<h3>Three easy-care plants for a brighter room</h3>
+							<p class="post-excerpt">Meet three unfussy plants that bring a little life to a bright corner.</p>
+							<details id="post-monstera"><summary>Read the story</summary><p class="article-body">Start with a pothos, a snake plant, or a sturdy rubber plant. Give each a spot with the right light, let the soil dry a little between waterings, and check in before adding more water. A simple routine is better than fussing every day.</p></details>
+						</div>
+					</article>
+					<article class="post-card" data-category="garden">
+						<a class="post-image" href="#post-greens" aria-label="Read: A small-space guide to growing your own greens"><img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80" alt="Neat rows of leafy vegetables growing in a garden" loading="lazy"></a>
+						<div class="post-content">
+							<p class="post-meta">In the garden &nbsp; / &nbsp; 4 min read</p>
+							<h3>A small-space guide to growing your own greens</h3>
+							<p class="post-excerpt">Fresh herbs and salad leaves can thrive in a few well-chosen containers.</p>
+							<details id="post-greens"><summary>Read the story</summary><p class="article-body">Choose a container with drainage, place it where it gets several hours of light, and start with quick-growing greens like lettuce or arugula. Keep the soil evenly moist and harvest a few outer leaves at a time so the plant can keep growing.</p></details>
+						</div>
+					</article>
+					<article class="post-card" data-category="slow-living">
+						<a class="post-image" href="#post-ritual" aria-label="Read: Make a weekend ritual out of plant care"><img src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=900&q=80" alt="Sunlight falling across the leaves of a green plant" loading="lazy"></a>
+						<div class="post-content">
+							<p class="post-meta">Slow living &nbsp; / &nbsp; 3 min read</p>
+							<h3>Make a weekend ritual out of plant care</h3>
+							<p class="post-excerpt">A slower look at your plants can turn a small chore into a reset.</p>
+							<details id="post-ritual"><summary>Read the story</summary><p class="article-body">Put on some music, check the soil, wipe dusty leaves, and turn pots toward the light. Notice new growth and remove anything that has dried out. A few calm minutes each week help you spot changes before they become problems.</p></details>
+						</div>
+					</article>
+					<article class="post-card" data-category="plant-care">
+						<a class="post-image" href="#post-water" aria-label="Read: How to know when your plant needs water"><img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80" alt="Healthy potted plant with broad green leaves" loading="lazy"></a>
+						<div class="post-content">
+							<p class="post-meta">Plant care &nbsp; / &nbsp; 4 min read</p>
+							<h3>How to know when your plant needs water</h3>
+							<p class="post-excerpt">Skip the calendar and let your plant and its soil tell you what it needs.</p>
+							<details id="post-water"><summary>Read the story</summary><p class="article-body">Touch the top few centimeters of soil before watering. If it still feels damp, check again later. When it is dry, water slowly until a little drains from the bottom, then empty the saucer. The timing changes with the season, light, and pot size.</p></details>
+						</div>
+					</article>
+					<article class="post-card" data-category="garden">
+						<a class="post-image" href="#post-balcony" aria-label="Read: Turn your balcony into a tiny garden"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80" alt="Green garden plants growing in natural light" loading="lazy"></a>
+						<div class="post-content">
+							<p class="post-meta">In the garden &nbsp; / &nbsp; 6 min read</p>
+							<h3>Turn your balcony into a tiny garden</h3>
+							<p class="post-excerpt">Use the light, the walls, and a few sturdy pots to make the most of your space.</p>
+							<details id="post-balcony"><summary>Read the story</summary><p class="article-body">Notice where the sun falls throughout the day before choosing plants. Use rail planters only where they are permitted and securely fitted, add vertical shelves for smaller pots, and group plants with similar watering needs together. Start small so the space stays easy to care for.</p></details>
+						</div>
+					</article>
+					<article class="post-card" data-category="slow-living">
+						<a class="post-image" href="#post-seasons" aria-label="Read: Let the seasons guide your growing"><img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=900&q=80" alt="Fresh green leaves growing in an outdoor garden" loading="lazy"></a>
+						<div class="post-content">
+							<p class="post-meta">Slow living &nbsp; / &nbsp; 5 min read</p>
+							<h3>Let the seasons guide your growing</h3>
+							<p class="post-excerpt">A seasonal rhythm makes it easier to work with nature instead of against it.</p>
+							<details id="post-seasons"><summary>Read the story</summary><p class="article-body">As days get shorter, many houseplants grow more slowly and need less water. In spring, fresh growth may call for a little more light and room. Pay attention to what changes in your home through the year and adjust your care gradually.</p></details>
+						</div>
+					</article>
+				</div>
+				<p class="no-results" id="no-results">No stories found. Try another search or category.</p>
+			</div>
+		</section>
+
+		<section class="newsletter" aria-labelledby="newsletter-title">
+			<div class="newsletter-copy">
+				<h2 id="newsletter-title">A little green in your inbox.</h2>
+				<p>Occasional plant-care notes and seasonal inspiration. No noise, just good things to grow.</p>
+			</div>
+			<form id="newsletter-form">
+				<div class="newsletter-form">
+					<label for="newsletter-email" hidden>Email address</label>
+					<input id="newsletter-email" type="email" placeholder="Your email address" autocomplete="email" required>
+					<button type="submit">Sign me up</button>
+				</div>
+				<p class="newsletter-status" id="newsletter-status" role="status" aria-live="polite"></p>
+			</form>
+		</section>
+	</main>
+
+	<footer>
+		<p>&copy; 2026 Rooted Garden Studio</p>
+		<p>Growing good things, together. <a href="#top" id="back-to-top">Back to top &#8593;</a></p>
+	</footer>
+
+	<script>
+		const menuToggle = document.getElementById("menu-toggle");
+		const mainNav = document.getElementById("main-nav");
+		const filterButtons = document.querySelectorAll(".filter-button");
+		const searchInput = document.getElementById("article-search");
+		const postCards = document.querySelectorAll(".post-card");
+		const resultCount = document.getElementById("result-count");
+		const noResults = document.getElementById("no-results");
+		let selectedCategory = "all";
+
+		menuToggle.addEventListener("click", () => {
+			const isOpen = mainNav.classList.toggle("is-open");
+			menuToggle.setAttribute("aria-expanded", String(isOpen));
+			menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+			menuToggle.innerHTML = isOpen ? "&times;" : "&#9776;";
+		});
+
+		mainNav.addEventListener("click", (event) => {
+			if (event.target.closest("a")) {
+				mainNav.classList.remove("is-open");
+				menuToggle.setAttribute("aria-expanded", "false");
+				menuToggle.setAttribute("aria-label", "Open menu");
+				menuToggle.innerHTML = "&#9776;";
+			}
+		});
+
+		function filterArticles() {
+			const query = searchInput.value.trim().toLowerCase();
+			let visibleCount = 0;
+
+			postCards.forEach((card) => {
+				const matchesCategory = selectedCategory === "all" || card.dataset.category === selectedCategory;
+				const matchesSearch = card.textContent.toLowerCase().includes(query);
+				const isVisible = matchesCategory && matchesSearch;
+				card.hidden = !isVisible;
+				if (isVisible) visibleCount += 1;
+			});
+
+			resultCount.textContent = `${visibleCount} ${visibleCount === 1 ? "story" : "stories"}`;
+			noResults.classList.toggle("is-visible", visibleCount === 0);
+		}
+
+		filterButtons.forEach((button) => {
+			button.addEventListener("click", () => {
+				selectedCategory = button.dataset.filter;
+				filterButtons.forEach((filterButton) => {
+					filterButton.setAttribute("aria-pressed", String(filterButton === button));
+				});
+				filterArticles();
+			});
+		});
+
+		searchInput.addEventListener("input", filterArticles);
+		filterArticles();
+
+		document.getElementById("newsletter-form").addEventListener("submit", (event) => {
+			event.preventDefault();
+			document.getElementById("newsletter-status").textContent = "Thanks for your interest. Connect a mailing list service to complete signup.";
+		});
+	</script>
+</body>
+</html>
